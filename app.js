@@ -46,14 +46,31 @@ app.delete("/expense/delete-expense/:expenseId", (req, res, next) => {
 
 app.post("/user/sign-up", async (req, res, next) => {
   try {
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
+    const { name, email, password } = req.body;
+    if (name.length == 0 || email.length == 0 || password.length == 0) {
+      return res.status(400).json({ error: "invalid params" });
+    }
     const data = await User.create({ name, email, password });
-    res.status(200).json({data})
+    res.status(200).json({ data });
   } catch (error) {
     console.log(error);
-    res.status(400);
+    res.status(500).json({ error });
+  }
+});
+
+app.post("/user/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({
+      where: { email: email, password: password },
+    });
+    if (user) {
+      res.status(200).json({ data: user });
+    } else {
+      throw new Error("Invalid Credentials");
+    }
+  } catch (error) {
+    res.status(400).json({err:error})
   }
 });
 
