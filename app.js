@@ -61,16 +61,26 @@ app.post("/user/sign-up", async (req, res, next) => {
 app.post("/user/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({
-      where: { email: email, password: password },
-    });
-    if (user) {
-      res.status(200).json({ data: user });
-    } else {
-      throw new Error("Invalid Credentials");
+    // const user = await User.findOne({
+    //   where: { email: email, password: password },
+    // });
+    // if (user) {
+    //   res.status(200).json({ message: "Logged In!" });
+    // } else {
+    //   throw new Error("Invalid Credentials");
+    // }
+    const user= await User.findOne({where:{email:email}})
+    if(!user){
+      res.status(404).json({msg:"no user found"})
+    }
+    if(user.password===password){
+     return res.status(200).json({message:"Logged in!"})
+    }
+    else{
+      return res.status(400).json({msg:"invalid password"})
     }
   } catch (error) {
-    res.status(400).json({err:error})
+    res.status(404).json({err:error.message})
   }
 });
 
