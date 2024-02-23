@@ -48,13 +48,17 @@ app.delete("/expense/delete-expense/:expenseId", (req, res, next) => {
 app.post("/user/sign-up", async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    if (name.length == 0 || email.length == 0 || password.length == 0) {
+    if (name.length === 0 || email.length === 0 || password.length === 0) {
       return res.status(400).json({ err: "Bad params!" });
     }
     bcrypt.hash(password, 10, async (err, hash) => {
-      console.log(err);
-      const data = await User.create({ name, email, password: hash });
-      res.status(201).json({ message: "Successfully signed up!" });
+      try {
+        console.log(err);
+        const data = await User.create({ name, email, password: hash });
+        res.status(201).json({ message: "Successfully signed up!" });
+      } catch (e) {
+        res.status(400).json(e);
+      }
     });
   } catch (error) {
     console.log(error);
@@ -67,7 +71,7 @@ app.post("/user/login", async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email: email } });
     if (!user) {
-      res.status(404).json({ msg: "no user found" });
+      return res.status(404).json({ msg: "no user found" });
     }
     bcrypt.compare(password, user.password, (error, result) => {
       if (error) {
