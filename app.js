@@ -45,11 +45,12 @@ app.get("/expense", Authenticate, (req, res, next) => {
     .catch((e) => console.log(e));
 });
 
-app.post("/expense/add-expense", (req, res, next) => {
+app.post("/expense/add-expense", Authenticate, (req, res, next) => {
   const amount = req.body.expense;
   const description = req.body.description;
   const category = req.body.category;
-  Expense.create({ amount, description, category })
+  //Expense.create({ amount, description, category, userId: req.user.id })
+ req.user.createExpense({amount,description,category})
     .then((data) => {
       res.status(200).json({ newExpense: data });
     })
