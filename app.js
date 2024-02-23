@@ -57,9 +57,9 @@ app.post("/expense/add-expense", Authenticate, (req, res, next) => {
     .catch((e) => console.log(e));
 });
 
-app.delete("/expense/delete-expense/:expenseId", (req, res, next) => {
+app.delete("/expense/delete-expense/:expenseId",Authenticate ,(req, res, next) => {
   const expId = req.params.expenseId;
-  Expense.destroy({ where: { id: expId } })
+  Expense.destroy({ where: { id: expId ,userId:req.user.id} })
     .then(() => {
       res.status(2000);
     })
