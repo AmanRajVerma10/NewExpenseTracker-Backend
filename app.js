@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const jwt= require("jsonwebtoken");
 
 const Expense = require("./model/expense");
 const User = require("./model/user");
@@ -14,6 +15,14 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ extended: false }));
 app.use(cors());
+
+User.hasMany(Expense);
+Expense.belongsTo(User);
+
+
+function generateAccessToken(id,name){
+  return jwt.sign({userId:id,name},"21782182hj32u23h")
+}
 
 app.get("/expense", (req, res, next) => {
   Expense.findAll()
@@ -80,7 +89,7 @@ app.post("/user/login", async (req, res, next) => {
           .json({ success: "false", message: "Something went wrong!" });
       }
       if (result === true) {
-        res.status(200).json({ success: true, message: "Logged in!" });
+        res.status(200).json({ success: true, message: "Logged in!",token:generateAccessToken(user.id,user.name) });
       }
       if (result === false) {
         res.status(200).json({ success: false, message: "Invalid password" });
