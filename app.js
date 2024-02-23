@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
-const jwt= require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const Expense = require("./model/expense");
 const User = require("./model/user");
@@ -19,13 +19,26 @@ app.use(cors());
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
-
-function generateAccessToken(id,name){
-  return jwt.sign({userId:id,name},"21782182hj32u23h")
+const Authenticate = async (req, res, next) => {
+  try {
+    const token = req.header("authorization");
+    const user = jwt.verify(token, "secretkey10");
+    const authenticatedUser = await User.findByPk(user.userId);
+    req.user = authenticatedUser;
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ success: false });
+  }
+};
+function generateAccessToken(id, name) {
+  return jwt.sign({ userId: id, name }, "secretkey10");
 }
 
-app.get("/expense", (req, res, next) => {
-  Expense.findAll()
+app.get("/expense", Authenticate, (req, res, next) => {
+  // Expense.findAll({where:{userId:req.user.id}})
+  req.user
+    .getExpenses()
     .then((data) => {
       res.status(200).json({ expenses: data });
     })
@@ -89,7 +102,11 @@ app.post("/user/login", async (req, res, next) => {
           .json({ success: "false", message: "Something went wrong!" });
       }
       if (result === true) {
-        res.status(200).json({ success: true, message: "Logged in!",token:generateAccessToken(user.id,user.name) });
+        res.status(200).json({
+          success: true,
+          message: "Logged in!",
+          token: generateAccessToken(user.id, user.name),
+        });
       }
       if (result === false) {
         res.status(200).json({ success: false, message: "Invalid password" });
