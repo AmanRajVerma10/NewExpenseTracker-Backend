@@ -11,6 +11,7 @@ const sequelize = require("./util/database");
 const userRoutes= require('./routes/user')
 const expenseRoutes= require('./routes/expense')
 const purchaseRoutes= require('./routes/purchase')
+const premiumFeatureRoutes= require('./routes/premiumFeature')
 const path = require("./util/path");
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(cors());
 app.use('/user',userRoutes)
 app.use('/expense',expenseRoutes);
 app.use(purchaseRoutes);
+app.use(premiumFeatureRoutes);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);

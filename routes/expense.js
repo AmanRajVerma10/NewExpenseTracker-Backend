@@ -8,10 +8,6 @@ router.get("/get-expense", Authenticate, expenseController.getExpense);
 
 router.post("/add-expense", Authenticate, expenseController.addExpense);
 
-router.delete(
-  "/delete-expense/:expenseId",
-  Authenticate,
-  expenseController.deleteExpense
-);
+router.delete("/delete-expense/:expenseId", Authenticate, expenseController.deleteExpense);
 
-module.exports=router;
+module.exports = router;
