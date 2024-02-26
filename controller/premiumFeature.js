@@ -14,7 +14,7 @@ exports.getUserLeaderboard = async (req, res, next) => {
     //   group: ["id"],
     //   order: [["totalSum", "DESC"]],
     // });
-    const users= await User.findAll()
+    const users= await User.findAll({order:[['totalexpense','DESC']]})
 
     res.status(200).json({ arr: users });
   } catch (error) {
