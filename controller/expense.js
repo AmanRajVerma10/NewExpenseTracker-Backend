@@ -13,7 +13,6 @@ exports.addExpense = async (req, res, next) => {
       { amount, description, category },
       { transaction: t }
     );
-    await t.commit();
     let updatedTotalExpense = amount;
     if (req.user.totalexpense) {
       updatedTotalExpense = Number(req.user.totalexpense) + Number(amount);
