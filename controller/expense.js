@@ -11,18 +11,20 @@ function uploadToS3(data, filename) {
     secretAccessKey: process.env.IAM_SECRET_KEY,
   });
 
-  s3bucket.createBucket(() => {
-    var params = {
-      Bucket: "myexpensetracker10",
-      Key: filename,
-      Body: data,
-    };
-
+  var params = {
+    Bucket: "myexpensetracker10",
+    Key: filename,
+    Body: data,
+    ACL: 'public-read'
+  };
+  return new Promise((resolve, reject) => {
     s3bucket.upload(params, (err, s3response) => {
       if (err) {
         console.log("Something went wrong", err);
+        reject(err);
       }
       console.log("Success", s3response);
+      resolve(s3response.Location);
     });
   });
 }
@@ -31,9 +33,9 @@ exports.downloadExpense = async (req, res) => {
   const expenses = await req.user.getExpenses();
   console.log(expenses);
   const stringifiedExpenses = JSON.stringify(expenses);
-  const filename = "Expense.txt";
-  const fileURL = uploadToS3(stringifiedExpenses, filename);
-  res.status(200).json({ fileURL, success: true });
+  const filename = `Expense${req.user.id}/${new Date()}.txt`;
+  const fileURL = await uploadToS3(stringifiedExpenses, filename);
+  res.status(201).json({ fileURL, success: true });
 };
 
 exports.addExpense = async (req, res, next) => {
