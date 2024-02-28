@@ -1,10 +1,25 @@
 const User = require("../model/user");
-const bcrypt= require('bcrypt')
-const jwt=require('jsonwebtoken')
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const filesdownloaded = require("../model/filesdownloaded");
 
-function generateAccessToken(id, name,ispremiumuser) {
-    return jwt.sign({ userId: id, name, ispremiumuser }, "secretkey10");
+function generateAccessToken(id, name, ispremiumuser) {
+  return jwt.sign({ userId: id, name, ispremiumuser }, "secretkey10");
+}
+
+exports.getFiles = async (req, res, next) => {
+  try {
+    const files = await filesdownloaded.findAll({
+      where: { userId: req.user.id },
+    });
+    if (files) {
+      return res.status(200).json({ files });
+    }
+    throw new Error("No files found!");
+  } catch (error) {
+   return res.status(500).json({ error: error.message });
   }
+};
 
 exports.signUp = async (req, res, next) => {
   try {

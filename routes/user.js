@@ -10,6 +10,8 @@ router.post("/sign-up", userController.signUp);
 
 router.post("/login", userController.login);
 
+router.get('/filesdownloaded',Authenticate,userController.getFiles);
+
 router.get("/download",Authenticate, expenseController.downloadExpense);
 
 module.exports = router;
