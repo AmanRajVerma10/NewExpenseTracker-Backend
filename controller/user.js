@@ -48,7 +48,7 @@ exports.login = async (req, res, next) => {
         });
       }
       if (result === false) {
-        res.status(200).json({ success: false, message: "Invalid password" });
+        res.status(400).json({ success: false, message: "Invalid password" });
       }
     });
   } catch (error) {
