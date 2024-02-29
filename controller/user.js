@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const filesdownloaded = require("../model/filesdownloaded");
 
 function generateAccessToken(id, name, ispremiumuser, totalexpense) {
-  return jwt.sign({ userId: id, name, ispremiumuser, totalexpense }, "secretkey10");
+  return jwt.sign({ userId: id, name, ispremiumuser, totalexpense }, process.env.JWT_SECRET_KEY);
 }
 
 exports.getFiles = async (req, res, next) => {

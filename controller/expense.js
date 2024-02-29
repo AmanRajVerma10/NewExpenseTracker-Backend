@@ -99,15 +99,7 @@ exports.getExpense = (req, res, next) => {
   })
   .catch(e=>{console.log(e)
   res.status(501).json(e)})
-   
 
-  // Expense.findAll({where:{userId:req.user.id}})
-  // req.user
-  //   .getExpenses()
-  //   .then((data) => {
-  //     res.status(200).json({ expenses: data });
-  //   })
-  //   .catch((e) => console.log(e));
 };
 
 exports.deleteExpense = (req, res, next) => {
