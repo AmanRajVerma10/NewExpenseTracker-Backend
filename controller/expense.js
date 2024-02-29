@@ -79,21 +79,22 @@ exports.addExpense = async (req, res, next) => {
 
 exports.getExpense = (req, res, next) => {
   const page=Number(req.params.page);
+  const {rows}= req.query;
   let totalItems;
   Expense.count({where:{userId:req.user.id}})
   .then(data=>{
     totalItems=data;
     return req.user.getExpenses({
-      offset: (page-1)*2,
-      limit: 2
+      offset: (page-1)*Number(rows),
+      limit: Number(rows)
     })
   }).then((expenses)=>{
     res.status(200).json({ currentPage:page,
-      hasNextPage:page*2<totalItems,
+      hasNextPage:page*Number(rows)<totalItems,
       nextPage:page+1,
       hasPreviousPage:page>1,
       previousPage:page-1,
-      lastPage:Math.ceil(totalItems/2),expenses})
+      lastPage:Math.ceil(totalItems/Number(rows)),expenses})
 
   })
   .catch(e=>{console.log(e)
