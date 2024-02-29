@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const filesdownloaded = require("../model/filesdownloaded");
 
-function generateAccessToken(id, name, ispremiumuser) {
-  return jwt.sign({ userId: id, name, ispremiumuser }, "secretkey10");
+function generateAccessToken(id, name, ispremiumuser, totalexpense) {
+  return jwt.sign({ userId: id, name, ispremiumuser, totalexpense }, "secretkey10");
 }
 
 exports.getFiles = async (req, res, next) => {
@@ -59,7 +59,7 @@ exports.login = async (req, res, next) => {
         res.status(200).json({
           success: true,
           message: "Logged in!",
-          token: generateAccessToken(user.id, user.name, user.ispremiumuser),
+          token: generateAccessToken(user.id, user.name, user.ispremiumuser, user.totalexpense),
         });
       }
       if (result === false) {

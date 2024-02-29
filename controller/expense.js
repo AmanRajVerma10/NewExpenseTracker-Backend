@@ -78,13 +78,35 @@ exports.addExpense = async (req, res, next) => {
 };
 
 exports.getExpense = (req, res, next) => {
-  // Expense.findAll({where:{userId:req.user.id}})
-  req.user
-    .getExpenses()
-    .then((data) => {
-      res.status(200).json({ expenses: data });
+  const page=Number(req.params.page);
+  let totalItems;
+  Expense.count({where:{userId:req.user.id}})
+  .then(data=>{
+    totalItems=data;
+    return req.user.getExpenses({
+      offset: (page-1)*2,
+      limit: 2
     })
-    .catch((e) => console.log(e));
+  }).then((expenses)=>{
+    res.status(200).json({ currentPage:page,
+      hasNextPage:page*2<totalItems,
+      nextPage:page+1,
+      hasPreviousPage:page>1,
+      previousPage:page-1,
+      lastPage:Math.ceil(totalItems/2),expenses})
+
+  })
+  .catch(e=>{console.log(e)
+  res.status(501).json(e)})
+   
+
+  // Expense.findAll({where:{userId:req.user.id}})
+  // req.user
+  //   .getExpenses()
+  //   .then((data) => {
+  //     res.status(200).json({ expenses: data });
+  //   })
+  //   .catch((e) => console.log(e));
 };
 
 exports.deleteExpense = (req, res, next) => {
