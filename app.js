@@ -5,6 +5,7 @@ const helmet= require('helmet');
 const morgan=require('morgan')
 const fs= require('fs')
 const path= require('path')
+require('dotenv').config();
 
 const Expense = require("./model/expense");
 const User = require("./model/user");

@@ -1,5 +1,4 @@
 const AWS = require("aws-sdk");
-require("dotenv").config();
 
 const Expense = require("../model/expense");
 const User = require("../model/user");

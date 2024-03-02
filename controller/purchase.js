@@ -1,9 +1,6 @@
 const Razorpay = require("razorpay");
-const dotenv = require("dotenv");
 const Order = require("../model/order");
 const jwt=require("jsonwebtoken")
-
-dotenv.config();
 
 function generateAccessToken(id, name, ispremiumuser) {
   return jwt.sign({ userId: id, name, ispremiumuser }, "secretkey10");

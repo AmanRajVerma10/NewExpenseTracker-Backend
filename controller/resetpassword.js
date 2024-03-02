@@ -1,7 +1,6 @@
 const UUID = require("uuid");
 const bcrypt = require("bcrypt");
 const Brevo = require("sib-api-v3-sdk");
-require("dotenv").config();
 
 const User = require("../model/user");
 const ForgotPassword = require("../model/forgotpassword");
