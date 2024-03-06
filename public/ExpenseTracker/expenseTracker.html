@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+    .footer { 
+        position: absolute; 
+        bottom: 0;  
+        z-index: 10;
+    }
+</style>
+    <title>Document</title>
+</head>
+<body>
+<div class="container mt-3">
+    <form id="myform" class="addForm">
+      <div class="mb-3 mt-3">
+        <label for="exp">Expense</label>
+        <input type="number" class="exp" id="exp">
+      </div>
+      <div class="mb-3 mt-3">
+        <label for="des">Choose Description</label>
+        <input type="name" class="des" id="des">
+    </div>
+    <div class="mb-3 mt-3"
+    <label for="cat">Choose Category</label>
+        <select id="cat" name="cattt">
+            <option value="Movies">Movies</option>
+            <option value="fuel">Fuel</option>
+            <option value="electricity">Electricity</option>
+            <option value="food">Food</option>
+        </select> 
+    </div>
+        <button>Add Expense</button> 
+    </form>
+    <div id="message"></div>
+    <button style="margin: 10px;" id="rzp-button1">Buy Premium</button>
+    <button onclick="download()" id="downloadexpense">Download File</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <form id="rowsForm"><input type="number" placeholder="Number of rows per page" id="rows">
+    <button >Enter</button></form>
+    <ul id="items" class="list-group">
+    </ul>
+    <ul id="leaders"></ul>
+    <ul id="files"></ul>
+    <div class="footer" id="footer">Footer content</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+    <script src="et.js"></script>
+</div>
+
+</body>
+</html>
