@@ -14,7 +14,7 @@ document
       if (response.status === 200) {
         alert(response.data.message);
         localStorage.setItem('token',response.data.token);
-        window.location.replace("./expenseTracker.html");
+        window.location.replace("../ExpenseTracker/expenseTracker.html");
       } else {
         throw new Error(response.data.message);
       }
@@ -24,5 +24,6 @@ document
   });
 
   document.getElementById('forgotPassword').onclick= async function(){
-    window.location.replace('./forgotPassword.html');
+    window.location.replace('../ForgotPassword/forgotPassword.html');
   }
+
