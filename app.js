@@ -66,7 +66,6 @@ app.use(premiumFeatureRoutes);
 app.use(resetPasswordRoutes);
 
 app.use((req, res, next) => {
-  console.log("urlll", req.url);
   res.sendFile(path.join(__dirname, `public/${req.url}`));
 });
 
